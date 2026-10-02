@@ -1,0 +1,27 @@
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Virtual Environment
+venv/
+.venv/
+env/
+
+# Environment Variables (API Key)
+.env
+
+# Run Output
+runs/
+
+# Office lock files
+~$*
+
+# IDE / OS / Local settings
+.vscode/
+.idea/
+.DS_Store
+.claude/settings.local.json
+
+# Logs
+*.log

@@ -1,0 +1,126 @@
+{
+  "kind": "studio.agent-config-draft",
+  "exportedAt": "2026-07-22T17:39:23.517Z",
+  "exportedFrom": {
+    "agentId": "agt_gdWNHB3sgiBbUuk9QRJwCu",
+    "agentName": "JD Agent",
+    "configId": "cfg_gY4YrLtY9T68VyANjJQF2h",
+    "configVer": 2
+  },
+  "agentConfig": {
+    "agent_name": "JD Agent",
+    "pipelineType": "extract",
+    "documentParseConfiguration": {
+      "modelName": "document-parse",
+      "mode": "standard",
+      "ocrMode": "force",
+      "lang": "",
+      "chartRecognition": false,
+      "coordinates": true,
+      "mergeMultipageTables": false,
+      "outputFormats": [
+        "html",
+        "text"
+      ],
+      "base64Encoding": [
+        "figure"
+      ]
+    },
+    "informationExtractConfiguration": {
+      "modelName": "",
+      "schemas": [
+        {
+          "type": "json_schema",
+          "json_schema": {
+            "name": "Extract-1",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "company_name": {
+                  "type": "string",
+                  "description": "회사명"
+                },
+                "position": {
+                  "type": "string",
+                  "description": "모집직무명"
+                },
+                "responsibilities": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "description": "담당업무"
+                  },
+                  "description": ""
+                },
+                "required_skills": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "description": "필수기술"
+                  },
+                  "description": ""
+                },
+                "preferred_skills": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "description": "우대기술"
+                  },
+                  "description": ""
+                },
+                "qualifications": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "description": "자격요건"
+                  },
+                  "description": ""
+                },
+                "preferred_qualifications": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "description": "우대사항"
+                  },
+                  "description": ""
+                },
+                "experience_required": {
+                  "type": "string",
+                  "description": "요구경력"
+                },
+                "education_required": {
+                  "type": "string",
+                  "description": "요구 학력"
+                },
+                "employment_type": {
+                  "type": "string",
+                  "description": "고용형태"
+                },
+                "location": {
+                  "type": "string",
+                  "description": "근무위치"
+                }
+              }
+            }
+          },
+          "mode": "standard",
+          "modelName": ""
+        }
+      ],
+      "categorySchemaMapping": {},
+      "location": true
+    },
+    "pipelineEdges": [
+      {
+        "id": "e0",
+        "source": {
+          "nodeType": "parse"
+        },
+        "target": {
+          "nodeType": "extract",
+          "name": "Extract-1"
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,222 @@
+{
+  "kind": "studio.agent-config-draft",
+  "exportedAt": "2026-07-22T17:38:41.137Z",
+  "exportedFrom": {
+    "agentId": "agt_CEkboCsSfLoRgCmuMT9SUA",
+    "agentName": "Resume Agent",
+    "configId": "cfg_FwCVbWseTod2vQgGV8w2dC",
+    "configVer": 2
+  },
+  "agentConfig": {
+    "agent_name": "Resume Agent",
+    "pipelineType": "extract",
+    "documentParseConfiguration": {
+      "modelName": "document-parse",
+      "mode": "standard",
+      "ocrMode": "force",
+      "lang": "",
+      "chartRecognition": false,
+      "coordinates": true,
+      "mergeMultipageTables": false,
+      "outputFormats": [
+        "html",
+        "text"
+      ],
+      "base64Encoding": [
+        "figure"
+      ]
+    },
+    "informationExtractConfiguration": {
+      "modelName": "",
+      "schemas": [
+        {
+          "type": "json_schema",
+          "json_schema": {
+            "name": "Extract-1",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "description": "지원자의 이름"
+                  },
+                  "description": ""
+                },
+                "email": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "description": "이메일주소"
+                  },
+                  "description": ""
+                },
+                "phone": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "description": "휴대폰번호"
+                  },
+                  "description": ""
+                },
+                "location": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "description": "거주 지역"
+                  },
+                  "description": ""
+                },
+                "position": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "description": "지원 직무"
+                  },
+                  "description": ""
+                },
+                "summary": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "description": "이력서 전체를 2 ~ 3문장으로 요약한 내용"
+                  },
+                  "description": ""
+                },
+                "skills": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "description": "기술 스택목록"
+                  },
+                  "description": ""
+                },
+                "company": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "description": "경력 회사명"
+                  },
+                  "description": ""
+                },
+                "career_position": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "description": "경력 직무"
+                  },
+                  "description": ""
+                },
+                "career_period": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "description": "근무 기간"
+                  },
+                  "description": ""
+                },
+                "career_description": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "description": "주요 업무 요약"
+                  },
+                  "description": ""
+                },
+                "project_name": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "description": "프로젝트명"
+                  },
+                  "description": ""
+                },
+                "project_period": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "description": "프로젝트 수행 기간"
+                  },
+                  "description": ""
+                },
+                "project_description": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "description": "프로젝트 설명"
+                  },
+                  "description": ""
+                },
+                "project_skills": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "description": "프로젝트에서 사용한 기술 목록"
+                  },
+                  "description": ""
+                },
+                "school": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "description": "학교명"
+                  },
+                  "description": ""
+                },
+                "major": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "description": "전공명"
+                  },
+                  "description": ""
+                },
+                "education_period": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "description": "재학 기간"
+                  },
+                  "description": ""
+                },
+                "certifications": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "description": "자격증 목록"
+                  },
+                  "description": ""
+                },
+                "core_competencies": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "description": "핵심역량"
+                  },
+                  "description": ""
+                }
+              }
+            }
+          },
+          "mode": "standard",
+          "modelName": ""
+        }
+      ],
+      "categorySchemaMapping": {},
+      "location": true
+    },
+    "pipelineEdges": [
+      {
+        "id": "e0",
+        "source": {
+          "nodeType": "parse"
+        },
+        "target": {
+          "nodeType": "extract",
+          "name": "Extract-1"
+        }
+      }
+    ]
+  }
+}

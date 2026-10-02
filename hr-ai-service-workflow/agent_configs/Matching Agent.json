@@ -1,0 +1,404 @@
+{
+  "kind": "studio.agent-config-draft",
+  "exportedAt": "2026-07-22T23:39:50.830Z",
+  "exportedFrom": {
+    "agentId": "agt_Eip6MqH7Exog2b6mw9k9fD",
+    "agentName": "Matching Agent",
+    "configId": "cfg_acwWxYb8gNWqoX7EACUKBy",
+    "configVer": 2
+  },
+  "agentConfig": {
+    "agent_name": "Matching Agent",
+    "pipelineType": "classify-extract",
+    "documentParseConfiguration": {
+      "modelName": "document-parse",
+      "mode": "standard",
+      "ocrMode": "force",
+      "lang": "",
+      "outputFormats": [
+        "html",
+        "text"
+      ],
+      "chartRecognition": false,
+      "coordinates": true,
+      "base64Encoding": [
+        "figure"
+      ],
+      "mergeMultipageTables": false
+    },
+    "documentClassifyConfiguration": {
+      "schema": {
+        "type": "json_schema",
+        "json_schema": {
+          "name": "document-classify",
+          "schema": {
+            "type": "string",
+            "oneOf": [
+              {
+                "const": "High Match",
+                "description": "지원자가 채용 공고와 매우 높은 적합도를 보이는 경우"
+              },
+              {
+                "const": "Medium Match",
+                "description": "일부 요구사항은 충족하지만 보완이 필요한 경우"
+              },
+              {
+                "const": "Low Match",
+                "description": "요구 기술 및 경험이 부족하여 적합도가 낮은 경우"
+              }
+            ]
+          }
+        }
+      },
+      "modelName": ""
+    },
+    "informationExtractConfiguration": {
+      "modelName": "",
+      "schemas": [
+        {
+          "type": "json_schema",
+          "json_schema": {
+            "name": "Extract_HighMatch",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "match_level": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "description": "최종 적합도 분류 (High Match / Medium Match / Low Match)"
+                  },
+                  "description": ""
+                },
+                "overall_score": {
+                  "type": "array",
+                  "items": {
+                    "type": "number",
+                    "description": "전체 적합도 점수(0~100)"
+                  },
+                  "description": ""
+                },
+                "summary": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "description": "전체 평가 요약"
+                  },
+                  "description": ""
+                },
+                "matched_skills": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "description": "JD와 일치하는 기술 스택"
+                  },
+                  "description": ""
+                },
+                "missing_skills": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "description": "JD에는 있으나 Resume에는 없는 기술"
+                  },
+                  "description": ""
+                },
+                "matched_experience": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "description": "JD와 일치하는 경력 및 경험"
+                  },
+                  "description": ""
+                },
+                "missing_requirements": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "description": "JD의 요구사항 중 부족한 항목"
+                  },
+                  "description": ""
+                },
+                "strengths": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "description": "지원자의 강점"
+                  },
+                  "description": ""
+                },
+                "weaknesses": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "description": "지원자의 보완점"
+                  },
+                  "description": ""
+                },
+                "recommendations": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "description": "개선 및 학습 추천 사항"
+                  },
+                  "description": ""
+                }
+              }
+            }
+          },
+          "mode": "standard",
+          "modelName": "",
+          "nodeMode": "extract"
+        },
+        {
+          "type": "json_schema",
+          "json_schema": {
+            "name": "Extract_MediumMatch",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "match_level": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "description": "최종 적합도 분류 (High Match / Medium Match / Low Match)"
+                  },
+                  "description": ""
+                },
+                "overall_score": {
+                  "type": "array",
+                  "items": {
+                    "type": "number",
+                    "description": "전체 적합도 점수(0~100)"
+                  },
+                  "description": ""
+                },
+                "summary": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "description": "전체 평가 요약"
+                  },
+                  "description": ""
+                },
+                "matched_skills": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "description": "JD와 일치하는 기술 스택"
+                  },
+                  "description": ""
+                },
+                "missing_skills": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "description": "JD에는 있으나 Resume에는 없는 기술"
+                  },
+                  "description": ""
+                },
+                "matched_experience": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "description": "JD와 일치하는 경력 및 경험"
+                  },
+                  "description": ""
+                },
+                "missing_requirements": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "description": "JD의 요구사항 중 부족한 항목"
+                  },
+                  "description": ""
+                },
+                "strengths": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "description": "지원자의 강점"
+                  },
+                  "description": ""
+                },
+                "weaknesses": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "description": "지원자의 보완점"
+                  },
+                  "description": ""
+                },
+                "recommendations": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "description": "개선 및 학습 추천 사항"
+                  },
+                  "description": ""
+                }
+              }
+            }
+          },
+          "mode": "standard",
+          "modelName": "",
+          "nodeMode": "extract"
+        },
+        {
+          "type": "json_schema",
+          "json_schema": {
+            "name": "Extract_LowMatch",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "match_level": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "description": "최종 적합도 분류 (High Match / Medium Match / Low Match)"
+                  },
+                  "description": ""
+                },
+                "overall_score": {
+                  "type": "array",
+                  "items": {
+                    "type": "number",
+                    "description": "전체 적합도 점수(0~100)"
+                  },
+                  "description": ""
+                },
+                "summary": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "description": "전체 평가 요약"
+                  },
+                  "description": ""
+                },
+                "matched_skills": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "description": "JD와 일치하는 기술 스택"
+                  },
+                  "description": ""
+                },
+                "missing_skills": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "description": "JD에는 있으나 Resume에는 없는 기술"
+                  },
+                  "description": ""
+                },
+                "matched_experience": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "description": "JD와 일치하는 경력 및 경험"
+                  },
+                  "description": ""
+                },
+                "missing_requirements": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "description": "JD의 요구사항 중 부족한 항목"
+                  },
+                  "description": ""
+                },
+                "strengths": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "description": "지원자의 강점"
+                  },
+                  "description": ""
+                },
+                "weaknesses": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "description": "지원자의 보완점"
+                  },
+                  "description": ""
+                },
+                "recommendations": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "description": "개선 및 학습 추천 사항"
+                  },
+                  "description": ""
+                }
+              }
+            }
+          },
+          "mode": "standard",
+          "modelName": "",
+          "nodeMode": "extract"
+        }
+      ],
+      "categorySchemaMapping": {
+        "High Match": "Extract_HighMatch",
+        "Medium Match": "Extract_MediumMatch",
+        "Low Match": "Extract_LowMatch"
+      },
+      "location": true,
+      "confidenceThreshold": 0.9676
+    },
+    "pipelineEdges": [
+      {
+        "id": "e0",
+        "source": {
+          "nodeType": "parse"
+        },
+        "target": {
+          "nodeType": "classify",
+          "name": "Classify-1"
+        }
+      },
+      {
+        "id": "e1",
+        "source": {
+          "nodeType": "classify",
+          "name": "Classify-1"
+        },
+        "target": {
+          "nodeType": "extract",
+          "name": "Extract_HighMatch"
+        },
+        "condition": {
+          "conditionName": "High Match"
+        }
+      },
+      {
+        "id": "e2",
+        "source": {
+          "nodeType": "classify",
+          "name": "Classify-1"
+        },
+        "target": {
+          "nodeType": "extract",
+          "name": "Extract_MediumMatch"
+        },
+        "condition": {
+          "conditionName": "Medium Match"
+        }
+      },
+      {
+        "id": "e3",
+        "source": {
+          "nodeType": "classify",
+          "name": "Classify-1"
+        },
+        "target": {
+          "nodeType": "extract",
+          "name": "Extract_LowMatch"
+        },
+        "condition": {
+          "conditionName": "Low Match"
+        }
+      }
+    ]
+  }
+}
