@@ -1,0 +1,301 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PriorScope 비교 예시</title>
+<style>
+  :root {
+    --bg: #f7f7f4; --surface: #ffffff; --surface-2: #f1f1ec; --border: #deded6;
+    --text: #1d1d1b; --muted: #62625c; --accent: #2f6fd0; --accent-bg: #e8f0fb;
+    --match: #b42318; --match-bg: #fde9e7;
+    --similar: #b54708; --similar-bg: #fef0dc;
+    --none: #067647; --none-bg: #e3f6ec;
+    --check: #6941c6; --check-bg: #efe9fb;
+    --code-bg: #f3f3ee;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #151514; --surface: #1e1e1c; --surface-2: #262623; --border: #36362f;
+      --text: #ececE6; --muted: #a3a39a; --accent: #7aa7ee; --accent-bg: #1c2a40;
+      --match: #f7a59b; --match-bg: #3d1b17;
+      --similar: #f5b867; --similar-bg: #3a2a12;
+      --none: #75d9a5; --none-bg: #123324;
+      --check: #c3a9f5; --check-bg: #2b2140;
+      --code-bg: #232320;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #151514; --surface: #1e1e1c; --surface-2: #262623; --border: #36362f;
+    --text: #ececE6; --muted: #a3a39a; --accent: #7aa7ee; --accent-bg: #1c2a40;
+    --match: #f7a59b; --match-bg: #3d1b17;
+    --similar: #f5b867; --similar-bg: #3a2a12;
+    --none: #75d9a5; --none-bg: #123324;
+    --check: #c3a9f5; --check-bg: #2b2140;
+    --code-bg: #232320;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text);
+    font-family: "Pretendard", "Malgun Gothic", "Apple SD Gothic Neo", system-ui, sans-serif;
+    line-height: 1.65; font-size: 15px; }
+  .wrap { max-width: 1040px; margin: 0 auto; padding: 32px 16px 80px; }
+  h1 { font-size: 28px; margin: 0 0 6px; letter-spacing: -0.02em; }
+  h2 { font-size: 20px; margin: 48px 0 12px; letter-spacing: -0.01em; display: flex; gap: 10px; align-items: baseline; }
+  h2 .step { font-size: 12px; font-weight: 700; color: var(--accent); background: var(--accent-bg);
+    padding: 2px 8px; border-radius: 999px; white-space: nowrap; }
+  h3 { font-size: 16px; margin: 24px 0 8px; }
+  p { margin: 8px 0; }
+  .lead { color: var(--muted); margin-bottom: 20px; }
+  .note { background: var(--surface-2); border: 1px solid var(--border); border-radius: 10px;
+    padding: 12px 14px; font-size: 14px; color: var(--muted); }
+  .note b { color: var(--text); }
+  .grid2 { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 14px; }
+  @media (max-width: 720px) { .grid2 { grid-template-columns: 1fr; } }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px; }
+  .card .label { font-size: 12px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; }
+  .card .title { font-weight: 700; font-size: 16px; margin: 4px 0; }
+  .card .meta { font-size: 13px; color: var(--muted); }
+  .badges { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+  @media (max-width: 720px) { .badges { grid-template-columns: 1fr 1fr; } }
+  .badge { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 14px; }
+  .badge .k { font-size: 12px; color: var(--muted); }
+  .badge .v { font-size: 22px; font-weight: 800; margin-top: 2px; }
+  .badge .s { font-size: 12px; color: var(--muted); }
+  .badge.hold { border-color: var(--check); background: var(--check-bg); }
+  .badge.hold .v { color: var(--check); }
+  .tablewrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 10px; background: var(--surface); }
+  table { border-collapse: collapse; width: 100%; font-size: 14px; }
+  th, td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  th { background: var(--surface-2); font-weight: 700; white-space: nowrap; }
+  tr:last-child td { border-bottom: none; }
+  td.id { font-weight: 700; white-space: nowrap; }
+  .orig { display: block; }
+  .ko { display: block; color: var(--muted); font-size: 13px; }
+  code, .mono { font-family: "Cascadia Code", Consolas, "D2Coding", monospace; font-size: 13px; }
+  pre { background: var(--code-bg); border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px;
+    overflow-x: auto; font-size: 13px; line-height: 1.6; margin: 8px 0; }
+  .chip { display: inline-block; font-size: 12px; font-weight: 700; padding: 2px 9px; border-radius: 999px; white-space: nowrap; }
+  .c-match { color: var(--match); background: var(--match-bg); }
+  .c-similar { color: var(--similar); background: var(--similar-bg); }
+  .c-none { color: var(--none); background: var(--none-bg); }
+  .c-check { color: var(--check); background: var(--check-bg); }
+  .down { font-size: 12px; color: var(--check); display: block; margin-top: 2px; }
+  ul { margin: 6px 0; padding-left: 20px; }
+  li { margin: 4px 0; }
+  .calc { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px; }
+  .bar { position: relative; height: 34px; background: var(--surface-2); border-radius: 8px; margin: 22px 0 30px; }
+  .zone { position: absolute; top: 0; bottom: 0; display: flex; align-items: center; justify-content: center;
+    font-size: 12px; color: var(--muted); border-right: 1px dashed var(--border); }
+  .range { position: absolute; top: 6px; bottom: 6px; background: var(--check); opacity: .35; border-radius: 6px; }
+  .tick { position: absolute; top: -20px; font-size: 12px; font-weight: 700; color: var(--check); transform: translateX(-50%); white-space: nowrap; }
+  .scale { position: absolute; bottom: -22px; font-size: 11px; color: var(--muted); transform: translateX(-50%); }
+  .rw { background: var(--surface); border-left: 4px solid var(--accent); padding: 12px 16px; border-radius: 6px; font-style: italic; }
+  footer { margin-top: 56px; font-size: 13px; color: var(--muted); border-top: 1px solid var(--border); padding-top: 16px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<h1>PriorScope 비교 예시</h1>
+<p class="lead">출원 논문과 기존 논문 한 쌍을 PriorScope 1차 MVP 설계대로 처리했을 때, 각 단계에서 어떤 데이터가 만들어지고 최종 화면에 어떤 결과가 나오는지 보여주는 예시입니다.</p>
+
+<div class="note"><b>시뮬레이션 결과입니다.</b> 실제 Upstage Studio 에이전트를 실행한 결과가 아니라, 두 논문 PDF를 읽고 설계서의 추출 규칙과 검증 규칙을 손으로 적용해 만든 예상 결과입니다. 실제 실행에서는 요소 분해 방식이나 판정이 달라질 수 있습니다. 반면 4단계 이후의 코드 계산(강등, 커버리지 범위, 등급)은 규칙이 정해져 있으므로, 같은 입력이면 같은 결과가 나옵니다.</div>
+
+<h2><span class="step">입력</span>두 논문</h2>
+<div class="grid2">
+  <div class="card">
+    <div class="label">출원 논문 (내 논문, M)</div>
+    <div class="title">Towards Open-Vocabulary Audio-Visual Event Localization</div>
+    <div class="meta">Zhou et al. · arXiv:2411.11278 · 16쪽 · 영문<br>파일: 출원예시 논문.pdf</div>
+    <p>학습 때 보지 못한 범주까지 포함해, 영상의 1초 구간마다 "소리도 나고 화면에도 보이는" 이벤트의 위치와 범주를 예측하는 새 과제(OV-AVEL)를 제안합니다. 사전학습된 ImageBind를 백본으로 씁니다.</p>
+  </div>
+  <div class="card">
+    <div class="label">기존 논문 (P)</div>
+    <div class="title">ImageBind: One Embedding Space To Bind Them All</div>
+    <div class="meta">Girdhar et al. · arXiv:2305.05665 · 15쪽 · 영문<br>파일: 비교예시논문_선행.pdf</div>
+    <p>이미지와 짝지은 데이터만으로 이미지·텍스트·오디오·깊이·열화상·IMU 6개 모달리티를 하나의 임베딩 공간에 묶고, 오디오 같은 모달리티에서 텍스트 기반 제로샷 분류가 저절로 가능해짐(emergent)을 보입니다.</p>
+  </div>
+</div>
+
+<h2><span class="step">최종 화면</span>결과 배지</h2>
+<div class="badges">
+  <div class="badge hold"><div class="k">등급</div><div class="v">판정 보류</div><div class="s">Low ~ Medium</div></div>
+  <div class="badge hold"><div class="k">커버리지</div><div class="v">15 ~ 35%</div><div class="s">확인필요 2개가 결론을 바꿀 수 있음</div></div>
+  <div class="badge"><div class="k">Classify 교차 검증</div><div class="v">참고</div><div class="s">Classify 결과 Low Overlap (보류라 참고값)</div></div>
+  <div class="badge"><div class="k">판정 개수 (M 10개)</div><div class="v" style="font-size:16px;line-height:1.9">
+    <span class="chip c-match">일치 1</span> <span class="chip c-similar">유사 1</span><br>
+    <span class="chip c-none">없음 6</span> <span class="chip c-check">확인필요 2</span></div></div>
+</div>
+<p class="lead" style="margin-top:12px">한 줄 결론: 출원 논문은 ImageBind의 인코더와 텍스트 기반 제로샷 분류를 기반으로 쓰지만, 과제·데이터셋·지표·시간 관계 층·융합 방식 6개 요소는 ImageBind에 없습니다. 다만 2개 요소를 확인하기 전까지는 "거의 안 겹친다(Low)"고 단정하지 않습니다.</p>
+
+<h2><span class="step">1단계</span>My Paper Agent → my_paper.json</h2>
+<p>Parse 노드가 PDF를 구조화된 텍스트로 바꾸고, Extract 노드가 필드 설명에 따라 값을 채웁니다. 핵심 기술 요소는 <code>[섹션] 원문 표현 | 한국어 설명</code> 형식으로 하나씩 추출하고, 코드가 순서대로 M1~M10 번호를 붙입니다.</p>
+<div class="tablewrap"><table>
+  <tr><th>번호</th><th>core_techniques (원문 | 한국어 설명)</th></tr>
+  <tr><td class="id">M1</td><td><span class="orig">[1] Open-Vocabulary Audio-Visual Event Localization (OV-AVEL) task</span><span class="ko">학습 때 보지 못한 범주까지 1초 구간 단위로 위치와 범주를 예측하는 새 과제</span></td></tr>
+  <tr><td class="id">M2</td><td><span class="orig">[2] OV-AVEBench dataset: 24,800 videos, 67 classes (seen:unseen = 46:21), segment-level manual annotation</span><span class="ko">VGGSound 영상을 골라 구간 단위로 직접 라벨링한 새 벤치마크</span></td></tr>
+  <tr><td class="id">M3</td><td><span class="orig">[1] Evaluation metrics: accuracy, segment-level F1, event-level F1 (IoU &gt; 0.5)</span><span class="ko">정확도에 구간·이벤트 단위 F1을 더한 평가 지표 표준화</span></td></tr>
+  <tr><td class="id">M4</td><td><span class="orig">[3.1] Frozen pretrained ImageBind audio/image/text encoders for segment-level features</span><span class="ko">사전학습 ImageBind 인코더로 구간별 오디오·영상·텍스트 특징 추출</span></td></tr>
+  <tr><td class="id">M5</td><td><span class="orig">[3.1] Zero-shot classification by cosine similarity of audio-text and visual-text features</span><span class="ko">범주 텍스트와의 코사인 유사도로 구간별 제로샷 분류</span></td></tr>
+  <tr><td class="id">M6</td><td><span class="orig">[3.1] Special text class "other" for background</span><span class="ko">배경 구간을 위한 특수 범주 other 추가</span></td></tr>
+  <tr><td class="id">M7</td><td><span class="orig">[3.1] Audio-visual class consistency check for training-free prediction</span><span class="ko">오디오와 영상의 예측 범주가 같을 때만 이벤트로 판정</span></td></tr>
+  <tr><td class="id">M8</td><td><span class="orig">[3.2] Learnable temporal layers (Transformer blocks) after frozen encoders</span><span class="ko">구간 사이 시간 관계를 학습하는 경량 트랜스포머 층</span></td></tr>
+  <tr><td class="id">M9</td><td><span class="orig">[3.2] Sqrt fusion (geometric mean) of audio-text and visual-text probabilities</span><span class="ko">오디오·영상 확률을 기하평균으로 융합</span></td></tr>
+  <tr><td class="id">M10</td><td><span class="orig">[3.2] Fine-tuning only temporal layers with seen-class texts and "other"</span><span class="ko">인코더는 고정하고, 학습 때 본 범주 텍스트만으로 시간 층만 미세조정</span></td></tr>
+</table></div>
+<h3>그 밖의 필드 (일부)</h3>
+<pre>title:          ["Towards Open-Vocabulary Audio-Visual Event Localization"]
+language:       ["en"]
+research_field: ["Audio-visual learning / event localization"]
+problem:        ["[1] Closed-set AVEL cannot handle event classes unseen during training",
+                 "[1] Open-set AVEL only marks unseen events as 'unknown' without category semantics",
+                 "[1] Open-set evaluation uses a small AVE subset with only 7 unknown classes"]
+contributions:  ["[1] Propose the OV-AVEL task", "[1] Build OV-AVEBench and standard metrics",
+                 "[1] Present training-free and fine-tuning baselines"]
+keywords:       ["open-vocabulary", "audio-visual event localization", "ImageBind", "zero-shot", "benchmark"]</pre>
+
+<h2><span class="step">2단계</span>Prior Paper Agent → prior_paper.json</h2>
+<div class="tablewrap"><table>
+  <tr><th>번호</th><th>core_techniques (원문 | 한국어 설명)</th></tr>
+  <tr><td class="id">P1</td><td><span class="orig">[3.2] Joint embedding of six modalities by aligning each modality to images</span><span class="ko">각 모달리티를 이미지에 정렬해 6개 모달리티를 하나의 공간에 묶음</span></td></tr>
+  <tr><td class="id">P2</td><td><span class="orig">[3.2] Symmetric InfoNCE contrastive loss between image and other modality</span><span class="ko">이미지와 다른 모달리티 사이의 대칭 대조 학습 손실</span></td></tr>
+  <tr><td class="id">P3</td><td><span class="orig">[3.2] Emergent alignment between modality pairs never trained together (e.g., audio-text)</span><span class="ko">함께 학습하지 않은 모달리티 쌍의 정렬이 저절로 생김</span></td></tr>
+  <tr><td class="id">P4</td><td><span class="orig">[4.1] Emergent zero-shot classification using text prompts</span><span class="ko">텍스트 프롬프트로 오디오 등을 제로샷 분류</span></td></tr>
+  <tr><td class="id">P5</td><td><span class="orig">[3.3] ViT encoders per modality, audio as mel-spectrogram, modality-specific linear heads</span><span class="ko">모달리티별 ViT 인코더와 투영 헤드</span></td></tr>
+  <tr><td class="id">P6</td><td><span class="orig">[4] Image/text encoders initialized from OpenCLIP ViT-H and kept frozen</span><span class="ko">이미지·텍스트 인코더는 OpenCLIP으로 초기화하고 고정</span></td></tr>
+  <tr><td class="id">P7</td><td><span class="orig">[4.4] Embedding arithmetic, cross-modal retrieval, audio-to-image generation</span><span class="ko">임베딩 연산과 교차 모달 응용</span></td></tr>
+  <tr><td class="id">P8</td><td><span class="orig">[5.1] Scaling the image encoder improves emergent performance</span><span class="ko">이미지 인코더가 클수록 emergent 성능 향상</span></td></tr>
+</table></div>
+<h3>그 밖의 필드 (일부)</h3>
+<pre>citation_info: ["Rohit Girdhar et al., arXiv:2305.05665, 2023"]   ← PDF에 학회명이 없어 arXiv로 추출
+limitations:   ["[6] Embeddings are not trained for a specific downstream task and lag specialist models",
+                "[6] Adapting general-purpose embeddings to structured prediction tasks (e.g., detection) is left for future work",
+                "[6] Research prototype, not ready for real-world applications"]</pre>
+
+<h2><span class="step">3단계</span>코드: 비교용 PDF 조립</h2>
+<p>코드가 M1~M10, P1~P8, R-M1~R-M4, R-P1~R-P5 번호를 붙여 <code>Compare_Input.pdf</code> 한 장으로 합칩니다. Studio 에이전트는 PDF만 입력으로 받기 때문입니다. 실험 결과는 6칸 형식으로 들어갑니다.</p>
+<div>
+<div><h3>출원 논문 실험 결과 (제안 방법만)</h3>
+<pre>R-M1  OV-AVEBench (total) | Fine-tuning, ImageBind-Huge frozen + temporal layers | Avg. (%) | 57.8 | ↑ | Table 2
+R-M2  OV-AVEBench (unseen) | Fine-tuning, 동일 | Avg. (%) | 55.8 | ↑ | Table 2
+R-M3  OV-AVEBench (total) | Training-free, ImageBind-Huge | Avg. (%) | 46.6 | ↑ | Table 2
+R-M4  AVE (test) | Fine-tuning, zero-shot transfer | Acc. (%) | 61.9 | ↑ | Table A11</pre></div>
+<div><h3>기존 논문 실험 결과 (제안 방법만)</h3>
+<pre>R-P1  VGGSound | ImageBind ViT-H, emergent zero-shot | Top-1 Acc (%) | 27.8 | ↑ | Table 2
+R-P2  ESC-50 | emergent zero-shot | Top-1 Acc (%) | 66.9 | ↑ | Table 2
+R-P3  AudioSet (audio-only) | emergent zero-shot | mAP | 17.6 | ↑ | Table 2
+R-P4  Clotho | text→audio retrieval, zero-shot | R@1 | 6.0 | ↑ | Table 3
+R-P5  ImageNet-1K | zero-shot (OpenCLIP 고정) | Top-1 Acc (%) | 77.7 | ↑ | Table 2</pre></div>
+</div>
+
+<h2><span class="step">4단계</span>Compare Agent → compare_result.json (LLM 원본)</h2>
+<p>Classify 노드가 등급을 고르고, 그 등급의 Extract 노드가 M마다 대응 판정을 적습니다. 아래는 코드 검증 전의 원본 출력입니다.</p>
+<pre>overlap_level: ["Low Overlap"]     llm_score: [25]
+element_mapping:
+  M1  ↔ -      | 없음     | 검토 범위 P1~P8      | ImageBind는 분류·검색만 다루며 시간 구간 위치 추정 과제가 없음
+  M2  ↔ -      | 없음     | 검토 범위 P1~P8      | 기존 데이터셋으로 평가할 뿐 새 데이터셋을 만들지 않음
+  M3  ↔ -      | 없음     | 검토 범위 P1~P8      | 구간·이벤트 단위 F1 지표 없음
+  M4  ↔ P1,P6  | 일치     | M[3.1] / P[3.2]      | 출원 논문이 ImageBind 인코더를 그대로 사용
+  M5  ↔ P4     | 유사     | M[3.1] / P[4.1]      | 텍스트 유사도 제로샷 분류는 같으나 출원 논문은 구간·모달리티 단위로 적용
+  M6  ↔ -      | 없음     | 검토 범위 P1~P8      | 배경용 범주 개념 없음
+  M7  ↔ P3     | 확인필요 | M[3.1] / P[3.2]      | 오디오·영상 범주 일치 판단이 emergent alignment의 응용인지 새 규칙인지 해석이 갈림
+  M8  ↔ -      | 없음     | 검토 범위 P1~P8      | 2프레임 클립 단위 처리로, 구간 간 시간 관계 층 없음
+  M9  ↔ -      | 없음     | 검토 범위 P1~P8      | 확률 융합 방식 없음
+  M10 ↔ P6     | 유사     | M[3.2] / P[3.3]      | 사전학습 인코더를 고정하고 일부만 학습하는 방식이 유사
+result_pairs: []</pre>
+
+<h2><span class="step">5단계</span>코드: 검증 → verified_result.json</h2>
+<h3>① 판정 강등</h3>
+<p>M10의 근거가 <code>P[3.3]</code>인데, 인용한 P6의 실제 섹션 태그는 <code>[4]</code>입니다. "인용한 섹션이 실제 요소의 섹션 태그와 다름" 규칙에 걸려 <b>유사 → 확인필요</b>로 내립니다. 나머지 9줄은 번호·근거·섹션이 모두 맞아 그대로 통과합니다.</p>
+
+<h3>② 커버리지 범위와 등급</h3>
+<div class="calc">
+<pre>M 요소 수 = 10   일치 1 · 유사 1 · 없음 6 · 확인필요 2
+최소 커버리지 = (일치 1 + 유사 1 × 0.5) ÷ 10 × 100            = 15.0%   → Low
+최대 커버리지 = (일치 1 + 확인필요 2 + 유사 1 × 0.5) ÷ 10 × 100 = 35.0%   → Medium
+최소와 최대의 등급 구간이 다름 → 판정 보류 (Low ~ Medium)</pre>
+<div class="bar" aria-label="커버리지 범위 15에서 35퍼센트">
+  <div class="zone" style="left:0;width:30%">Low</div>
+  <div class="zone" style="left:30%;width:40%">Medium</div>
+  <div class="zone" style="left:70%;width:30%;border-right:none">High</div>
+  <div class="range" style="left:15%;width:20%"></div>
+  <div class="tick" style="left:15%">15%</div>
+  <div class="tick" style="left:35%">35%</div>
+  <div class="scale" style="left:30%">30</div>
+  <div class="scale" style="left:70%">70</div>
+</div>
+<p>확인필요 2개(M7, M10)가 어떻게 판명되느냐에 따라 결론이 달라집니다.</p>
+<div class="tablewrap"><table>
+  <tr><th>M7</th><th>M10</th><th>커버리지</th><th>등급</th></tr>
+  <tr><td>없음</td><td>없음</td><td>15.0%</td><td>Low</td></tr>
+  <tr><td>없음</td><td>유사</td><td>20.0%</td><td>Low</td></tr>
+  <tr><td>일치</td><td>없음</td><td>25.0%</td><td>Low</td></tr>
+  <tr><td>일치</td><td>유사</td><td>30.0%</td><td>Medium</td></tr>
+  <tr><td>일치</td><td>일치</td><td>35.0%</td><td>Medium</td></tr>
+</table></div>
+<p>따라서 지금 "Low(거의 안 겹침)"라고 표시하면 허위 신규 주장이 될 수 있어 보류합니다. Classify 결과(Low Overlap)는 등급이 보류됐으므로 참고값으로만 보여줍니다.</p>
+</div>
+
+<h3>③ 정량 비교</h3>
+<p>Compare Agent가 같은 데이터셋·지표의 쌍을 찾지 못했습니다(<code>result_pairs: []</code>). 화면에는 <b>"직접 비교 가능한 실험이 없습니다"</b>가 표시됩니다.</p>
+<ul>
+  <li>출원 논문의 OV-AVEBench는 VGGSound 영상으로 만들었지만, 과제(구간 위치 추정 vs 클립 분류), 범주 수(67 vs 309), 지표(Avg. F1 vs Top-1 Acc)가 달라 같은 데이터셋이 아닙니다.</li>
+  <li>만약 LLM이 <code>R-M1 ~ R-P1 | 조건 다름</code>처럼 쌍을 적었더라도, 코드는 "조건 다름"을 보고 <b>비교 불가</b>로 처리합니다. 57.8 vs 27.8을 "우세 +30.0%p"로 보여주는 일은 없습니다.</li>
+  <li>출원 논문 표 2의 training-free 결과(46.6)는 ImageBind를 쓴 값이지만, 출원 논문이 직접 측정한 수치이지 기존 논문이 보고한 결과가 아니므로 비교 쌍이 되지 않습니다.</li>
+</ul>
+<div class="note">참고로, 쌍이 있었다면 이렇게 표시됩니다. 예: <code>ESC-50 | 동일 설정 | Top-1 Acc (%) | 70.2 vs 66.9</code> → <span class="chip c-none">우세</span> +3.3%p (상대 +4.9%). 이 숫자는 형식을 보여주기 위한 가상의 값입니다.</div>
+
+<h2><span class="step">최종 화면</span>요소 대응표</h2>
+<div class="tablewrap"><table>
+  <tr><th>M</th><th>출원 논문 요소</th><th>대응 P</th><th>판정</th><th>근거 / 설명</th></tr>
+  <tr><td class="id">M1</td><td>OV-AVEL 과제 정의</td><td>-</td><td><span class="chip c-none">없음</span></td><td>검토 범위 P1~P8 · 시간 구간 위치 추정 과제 없음</td></tr>
+  <tr><td class="id">M2</td><td>OV-AVEBench 데이터셋</td><td>-</td><td><span class="chip c-none">없음</span></td><td>검토 범위 P1~P8 · 새 데이터셋 없음</td></tr>
+  <tr><td class="id">M3</td><td>구간·이벤트 F1 평가 지표</td><td>-</td><td><span class="chip c-none">없음</span></td><td>검토 범위 P1~P8</td></tr>
+  <tr><td class="id">M4</td><td>ImageBind 인코더로 특징 추출</td><td>P1, P6</td><td><span class="chip c-match">일치</span></td><td>M[3.1] / P[3.2] · ImageBind를 그대로 사용</td></tr>
+  <tr><td class="id">M5</td><td>텍스트 유사도 제로샷 분류</td><td>P4</td><td><span class="chip c-similar">유사</span></td><td>M[3.1] / P[4.1] · 구간·모달리티 단위로 적용한 점이 다름</td></tr>
+  <tr><td class="id">M6</td><td>배경용 범주 other</td><td>-</td><td><span class="chip c-none">없음</span></td><td>검토 범위 P1~P8</td></tr>
+  <tr><td class="id">M7</td><td>오디오·영상 범주 일치 판정</td><td>P3</td><td><span class="chip c-check">확인필요</span></td><td>M[3.1] / P[3.2] · 해석이 갈림 (LLM 판정)</td></tr>
+  <tr><td class="id">M8</td><td>시간 관계 트랜스포머 층</td><td>-</td><td><span class="chip c-none">없음</span></td><td>검토 범위 P1~P8</td></tr>
+  <tr><td class="id">M9</td><td>기하평균 확률 융합</td><td>-</td><td><span class="chip c-none">없음</span></td><td>검토 범위 P1~P8</td></tr>
+  <tr><td class="id">M10</td><td>인코더 고정 후 시간 층만 미세조정</td><td>P6</td><td><span class="chip c-check">확인필요</span></td><td>M[3.2] / P[3.3]<span class="down">강등: 유사 → 확인필요 (P6의 섹션은 [4]인데 [3.3]을 인용)</span></td></tr>
+</table></div>
+
+<h2><span class="step">최종 화면</span>차별점과 겹침</h2>
+<div class="grid2">
+  <div class="card"><div class="label" style="color:var(--none)">출원 논문 고유 요소 (차별점) · 6개</div>
+    <ul><li>M1 OV-AVEL 과제 정의</li><li>M2 OV-AVEBench 데이터셋</li><li>M3 구간·이벤트 단위 평가 지표</li><li>M6 배경용 범주 other</li><li>M8 시간 관계 트랜스포머 층</li><li>M9 기하평균 확률 융합</li></ul></div>
+  <div class="card"><div class="label" style="color:var(--match)">기존 논문과 겹치는 요소 · 2개</div>
+    <ul><li>M4 ImageBind 인코더 사용 <span class="chip c-match">일치</span></li><li>M5 텍스트 유사도 제로샷 분류 <span class="chip c-similar">유사</span></li></ul></div>
+</div>
+
+<h2><span class="step">최종 화면</span>차별성 리포트</h2>
+<h3>요약</h3>
+<p>출원 논문은 ImageBind의 사전학습 인코더와 텍스트 기반 제로샷 분류를 기반 기술로 사용합니다(M4, M5). 반면 과제 정의, 데이터셋, 평가 지표, 배경 범주, 시간 관계 층, 확률 융합 방식 6개 요소는 ImageBind에 없습니다. 2개 요소(M7, M10)는 확인이 필요해 등급은 Low~Medium으로 보류됩니다.</p>
+<h3>주의 지점</h3>
+<ul>
+  <li>ImageBind 인코더 사용(M4)은 기여가 아니라 기반 기술이라는 점을 본문에서 분명히 밝히세요.</li>
+  <li>training-free 베이스라인의 제로샷 분류(M5)는 ImageBind의 emergent zero-shot classification을 구간 단위로 적용한 것입니다. "제안한다"보다 "적용·확장한다"로 쓰는 편이 안전합니다.</li>
+  <li>인코더를 고정하고 일부 층만 학습하는 방식(M10)은 ImageBind의 학습 방식과 비슷하게 읽힐 수 있습니다.</li>
+  <li>ImageBind와 같은 조건에서 비교한 수치가 없으므로, ImageBind보다 성능이 좋다는 주장은 근거가 없습니다.</li>
+</ul>
+<h3>서술 제안</h3>
+<ol>
+  <li>ImageBind가 클립 단위의 제로샷 분류를 보였다면, 본 연구는 이를 1초 구간 단위의 시간적 위치 추정과 학습 때 보지 못한 범주 예측으로 확장한다.</li>
+  <li>ImageBind 저자들이 한계로 든 "구조적 예측 과제로의 적응"에 대해, 본 연구는 경량 시간 관계 층과 기하평균 기반 오디오·영상 확률 융합으로 하나의 해법을 제시한다.</li>
+  <li>기존 평가(AudioSet, VGGSound 등 클립 분류)와 달리, 구간·이벤트 단위 F1을 포함한 OV-AVEBench를 새로 구축했다.</li>
+</ol>
+<h3>Related Work 초안 (출원 논문 언어: 영어)</h3>
+<p class="rw">ImageBind (Girdhar et al., 2023) learns a single joint embedding space across six modalities by aligning each modality to images, enabling emergent zero-shot recognition of audio without paired audio-text data. We build on its frozen audio, visual, and text encoders, but extend clip-level zero-shot recognition to segment-level open-vocabulary audio-visual event localization with lightweight temporal layers and a geometric-mean fusion of audio and visual predictions.</p>
+
+<h2><span class="step">최종 화면</span>확인 필요 목록</h2>
+<div class="tablewrap"><table>
+  <tr><th>M</th><th>요소</th><th>사유</th><th>확인할 것</th></tr>
+  <tr><td class="id">M7</td><td>오디오·영상 범주 일치 판정</td><td>LLM이 확인필요로 판정. emergent alignment(P3)의 응용인지 새 규칙인지 해석이 갈림</td><td>ImageBind 3.2절과 출원 논문 3.1절을 직접 대조</td></tr>
+  <tr><td class="id">M10</td><td>인코더 고정 후 시간 층만 미세조정</td><td>근거 섹션 불일치로 강등 (P6의 섹션 [4], 인용 [3.3])</td><td>ImageBind 4절의 인코더 고정 방식과 비교</td></tr>
+</table></div>
+<p class="note" style="margin-top:12px">두 항목을 확인하면 등급이 확정됩니다. 한쪽이 "일치"이고 다른 쪽이 "유사" 이상이면 커버리지가 30% 이상이 되어 Medium, 그 밖의 경우는 Low입니다.</p>
+
+<footer>PriorScope 1차 MVP 설계 예시 · 사전 점검용이며 심사·표절 판정을 대체하지 않습니다. · 입력 논문: Zhou et al., arXiv:2411.11278 / Girdhar et al., arXiv:2305.05665</footer>
+</div>
+</body>
+</html>
